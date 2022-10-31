@@ -1,24 +1,23 @@
-<script setup lang="ts"></script>
 <template>
   <section class="cc">
     <div class="cc-bg">
       <svg
-        width="360"
+        fill="none"
         height="230"
         viewBox="0 0 360 230"
-        fill="none"
+        width="360"
         xmlns="http://www.w3.org/2000/svg"
       >
         <mask
           id="mask0_3_2547"
-          style="mask-type: alpha"
+          height="230"
           maskUnits="userSpaceOnUse"
+          style="mask-type: alpha"
+          width="360"
           x="0"
           y="0"
-          width="360"
-          height="230"
         >
-          <rect width="360" height="230" rx="15.4011" fill="#16084C" />
+          <rect fill="#16084C" height="230" rx="15.4011" width="360" />
         </mask>
         <g mask="url(#mask0_3_2547)">
           <g filter="url(#filter0_f_3_2547)">
@@ -37,44 +36,44 @@
         <defs>
           <filter
             id="filter0_f_3_2547"
+            color-interpolation-filters="sRGB"
+            filterUnits="userSpaceOnUse"
+            height="351.306"
+            width="468.777"
             x="43.2629"
             y="-225.286"
-            width="468.777"
-            height="351.306"
-            filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feBlend
-              mode="normal"
               in="SourceGraphic"
               in2="BackgroundImageFix"
+              mode="normal"
               result="shape"
             />
             <feGaussianBlur
-              stdDeviation="27.9144"
               result="effect1_foregroundBlur_3_2547"
+              stdDeviation="27.9144"
             />
           </filter>
           <filter
             id="filter1_f_3_2547"
+            color-interpolation-filters="sRGB"
+            filterUnits="userSpaceOnUse"
+            height="351.306"
+            width="468.777"
             x="-9.12087"
             y="-259.536"
-            width="468.777"
-            height="351.306"
-            filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feBlend
-              mode="normal"
               in="SourceGraphic"
               in2="BackgroundImageFix"
+              mode="normal"
               result="shape"
             />
             <feGaussianBlur
-              stdDeviation="27.9144"
               result="effect1_foregroundBlur_3_2547"
+              stdDeviation="27.9144"
             />
           </filter>
         </defs>
@@ -82,41 +81,72 @@
     </div>
 
     <div class="cc-logo">
-      <span
-        ><img src="src/assets/svgs/cc-icon.svg" alt="ícone padrão de cartão"
-      /></span>
-      <span
-        ><img
-          src="src/assets/svgs/cc-visa.svg"
+      <span>
+        <img alt="ícone padrão de cartão" src="src/assets/svgs/cc-icon.svg" />
+      </span>
+      <span>
+        <img
+          :src="`src/assets/svgs/cc-${type}.svg`"
           alt="ícone do cartão de crédito selecionado"
-      /></span>
+        />
+      </span>
     </div>
 
     <div class="cc-info">
-      <div class="cc-number">1234 5678 9012 3456</div>
+      <div class="cc-number" v-text="cardNumber" />
 
       <div class="cc-holder">
         <div class="label">Nome do titular</div>
-        <div class="value">FULANO DA SILVA</div>
+        <div class="value" v-text="cardHolder" />
       </div>
 
       <div class="cc-extra">
         <div class="cc-expiration">
           <div class="label">Expiração</div>
-          <div class="value">02/32</div>
+          <div class="value" v-text="expirationDate" />
         </div>
         <div class="cc-security">
           <div class="label">CVC</div>
-          <div class="value">123</div>
+          <div class="value" v-text="securityCode" />
         </div>
         <img
-          src="src/assets/svgs/cc-chip.svg"
           alt="ícone de chip de cartão de crédito"
+          src="src/assets/svgs/cc-chip.svg"
         />
       </div>
     </div>
   </section>
 </template>
+<script lang="ts">
+const types = ["default", "visa", "mastercard"];
+
+export default {
+  props: {
+    type: {
+      type: String,
+      default: "default",
+      validator: (type: string) => types.includes(type.toLowerCase()),
+    },
+    cardNumber: {
+      type: String,
+      default: "1234 5678 9012 3456",
+    },
+    cardHolder: {
+      type: String,
+      default: "FULANO DA SILVA",
+    },
+    expirationDate: {
+      type: String,
+      default: "02/32",
+    },
+    securityCode: {
+      type: String,
+      default: "123",
+    },
+  },
+};
+</script>
+
 <style scoped>
 /* CC */
 .cc {
