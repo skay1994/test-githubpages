@@ -2,29 +2,123 @@
   <form action="">
     <div class="input-wrapper">
       <label for="card-number">Número do cartão</label>
-      <input id="card-number"/>
+      <input
+        id="card-number"
+        v-imask="cardNumberPattern"
+        @accept="creditCardAccept"
+      />
     </div>
 
     <div class="input-wrapper">
       <label for="card-holder">Nome do titular</label>
-      <input id="card-holder"/>
+      <input id="card-holder" v-model="holder" @input="cardHolder" />
     </div>
 
     <div class="flex">
       <div class="input-wrapper">
         <label for="expiration-date">Expiração</label>
-        <input id="expiration-date"/>
+        <input
+          id="expiration-date"
+          v-imask="expirationDatePattern"
+          @accept="expirationDate"
+        />
       </div>
 
       <div class="input-wrapper">
         <label for="security-code">CVC</label>
-        <input id="security-code"/>
+        <input
+          id="security-code"
+          v-imask="securityCodePattern"
+          @accept="securityCode"
+        />
       </div>
     </div>
 
     <button id="add-card" type="button">ADICIONAR CARTÃO</button>
   </form>
 </template>
+<script lang="ts">
+// @ts-ignore
+import { IMask, IMaskDirective } from "vue-imask";
+
+export default {
+  emits: [
+    "cardType",
+    "cardNumber",
+    "cardHolder",
+    "expirationDate",
+    "securityCode",
+  ],
+  data() {
+    const currentYear = String(new Date().getFullYear()).slice(2);
+    const nextTeenYears = String(new Date().getFullYear() + 10).slice(2);
+
+    return {
+      holder: "",
+      expirationDatePattern: {
+        mask: "MM{/}YY",
+        blocks: {
+          YY: {
+            mask: IMask.MaskedRange,
+            from: currentYear,
+            to: nextTeenYears,
+          },
+          MM: {
+            mask: IMask.MaskedRange,
+            from: 1,
+            to: 12,
+          },
+        },
+      },
+      securityCodePattern: {
+        mask: "0000",
+      },
+      cardNumberPattern: {
+        mask: [
+          {
+            mask: "0000 0000 0000 0000",
+            regex: /^4\d{0,15}/,
+            cardType: "visa",
+          },
+          {
+            mask: "0000 0000 0000 0000",
+            regex: /(^5[1-5]\d{0,2}|^22[2-9]\d|^2[3-7]\d{0,2})\d{0,12}/,
+            cardType: "mastercard",
+          },
+          {
+            mask: "0000 0000 0000 0000",
+            cardType: "default",
+          },
+        ],
+        dispatch: (appended: string, dynamicMasked: any) => {
+          const number = (dynamicMasked.value + appended).replace(/^D/g, "");
+          return dynamicMasked.compiledMasks.find(function (item: any) {
+            return number.match(item.regex);
+          });
+        },
+      },
+    };
+  },
+  methods: {
+    creditCardAccept(event: any) {
+      this.$emit("cardType", event.detail.masked.currentMask.cardType);
+      this.$emit("cardNumber", event.detail.masked.currentMask.typedValue);
+    },
+    cardHolder() {
+      this.$emit("cardHolder", this.holder);
+    },
+    expirationDate(event: any) {
+      this.$emit("expirationDate", event.detail.value);
+    },
+    securityCode(event: any) {
+      this.$emit("securityCode", event.detail.value);
+    },
+  },
+  directives: {
+    imask: IMaskDirective,
+  },
+};
+</script>
 <style scoped>
 form {
   max-width: 36rem;
