@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 
-import Card from "../Card.vue";
+import Card, { colors } from "../Card.vue";
 
 describe("Card Component Tests", function () {
   it("renders properly", () => {
@@ -65,10 +65,14 @@ describe("Card Component Tests", function () {
       props: { type },
     } as any);
     const logo = wrapper.find(".cc-logo span:nth-child(2) img");
+    const color1 = wrapper.find(".cc-bg svg > g g:nth-child(1) path");
+    const color2 = wrapper.find(".cc-bg svg > g g:nth-child(2) path");
 
     expect(logo.attributes()["src"]).toContain(
       "src/assets/svgs/cc-default.svg"
     );
+    expect(color1.attributes("fill"), colors.default[0]);
+    expect(color2.attributes("fill"), colors.default[1]);
   });
 
   it("Change card type as visa", () => {
@@ -77,8 +81,12 @@ describe("Card Component Tests", function () {
       props: { type },
     } as any);
     const logo = wrapper.find(".cc-logo span:nth-child(2) img");
+    const color1 = wrapper.find(".cc-bg svg > g g:nth-child(1) path");
+    const color2 = wrapper.find(".cc-bg svg > g g:nth-child(2) path");
 
     expect(logo.attributes()["src"]).toContain("src/assets/svgs/cc-visa.svg");
+    expect(color1.attributes("fill"), colors.visa[0]);
+    expect(color2.attributes("fill"), colors.visa[1]);
   });
 
   it("Change card type as mastercard", () => {
@@ -87,10 +95,14 @@ describe("Card Component Tests", function () {
       props: { type },
     } as any);
     const logo = wrapper.find(".cc-logo span:nth-child(2) img");
+    const color1 = wrapper.find(".cc-bg svg > g g:nth-child(1) path");
+    const color2 = wrapper.find(".cc-bg svg > g g:nth-child(2) path");
 
     expect(logo.attributes()["src"]).toContain(
       "src/assets/svgs/cc-mastercard.svg"
     );
+    expect(color1.attributes("fill"), colors.mastercard[0]);
+    expect(color2.attributes("fill"), colors.mastercard[1]);
   });
 
   it("Change card type with invalid type", () => {
