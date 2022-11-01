@@ -86,8 +86,19 @@
       </span>
       <span>
         <img
-          :src="`/assets/svgs/cc-${type}.svg`"
+          v-if="type === 'default'"
           alt="ícone do cartão de crédito selecionado"
+          src="/assets/svgs/cc-default.svg"
+        />
+        <img
+          v-if="type === 'visa'"
+          alt="ícone do cartão de crédito selecionado"
+          src="/assets/svgs/cc-visa.svg"
+        />
+        <img
+          v-if="type === 'mastercard'"
+          alt="ícone do cartão de crédito selecionado"
+          src="/assets/svgs/cc-mastercard.svg"
         />
       </span>
     </div>
