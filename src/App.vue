@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img alt="ícone rocketpay" src="./assets/svgs/logo.svg" />
+    <img alt="ícone rocketpay" src="/assets/svgs/logo.svg" />
   </header>
   <Card
     :cardHolder="cardHolder"

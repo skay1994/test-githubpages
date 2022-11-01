@@ -82,11 +82,11 @@
 
     <div class="cc-logo">
       <span>
-        <img alt="ícone padrão de cartão" src="src/assets/svgs/cc-icon.svg" />
+        <img alt="ícone padrão de cartão" src="/assets/svgs/cc-icon.svg" />
       </span>
       <span>
         <img
-          :src="`src/assets/svgs/cc-${type}.svg`"
+          :src="`/assets/svgs/cc-${type}.svg`"
           alt="ícone do cartão de crédito selecionado"
         />
       </span>
@@ -111,7 +111,7 @@
         </div>
         <img
           alt="ícone de chip de cartão de crédito"
-          src="src/assets/svgs/cc-chip.svg"
+          src="/assets/svgs/cc-chip.svg"
         />
       </div>
     </div>
@@ -151,11 +151,13 @@ export default {
   },
   computed: {
     firstColor(): string {
+      // @ts-ignore
       if (types.includes(this.type)) return colors[this.type][0];
 
       return colors.default[0];
     },
     secondaryColor(): string {
+      // @ts-ignore
       if (types.includes(this.type)) return colors[this.type][1];
 
       return colors.default[1];
@@ -167,7 +169,7 @@ export default {
 <style scoped>
 /* CC */
 .cc {
-  background: url("src/assets/svgs/cc-bg.svg") no-repeat center;
+  background: url("public/assets/svgs/cc-bg.svg") no-repeat center;
   width: 36rem;
   height: 23rem;
   padding: 2rem;
